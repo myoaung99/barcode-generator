@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button, Typography } from "@mui/material";
+import classes from "./LoginForm.module.css";
 
-const Form = ({ onSubmit }) => {
+const LoginForm = ({ onSubmit }) => {
   const [inputValues, setInputValues] = useState({
-    vipCode: {
+    email: {
       value: "",
       isValid: true,
     },
-    customerName: {
+    password: {
       value: "",
       isValid: true,
     },
@@ -28,38 +29,39 @@ const Form = ({ onSubmit }) => {
   const submitHandler = () => {
     // TODO: add validation
 
-    const numberVipCode = Number(inputValues.vipCode.value);
+    const email = inputValues.email.value;
+    const password = inputValues.password.value;
 
-    const vipCodeIsValid =
-      !isNaN(numberVipCode) && inputValues.vipCode.value.trim().length === 12;
+    const emailIsValid = email.includes("@");
+    const passwordIsValid = !!password;
 
-    const nameIsValid = inputValues.customerName.value.trim().length > 0;
-
-    if (!vipCodeIsValid || !nameIsValid) {
+    if (!emailIsValid) {
       setInputValues((current) => {
         return {
-          vipCode: { value: current.vipCode.value, isValid: vipCodeIsValid },
-          customerName: {
-            value: current.customerName.value,
-            isValid: nameIsValid,
+          email: { value: current.email.value, isValid: emailIsValid },
+          password: {
+            value: current.password.value,
+            isValid: passwordIsValid,
           },
         };
       });
       return;
     }
-    onSubmit({
-      vipCode: numberVipCode,
-      customerName: inputValues.customerName.value,
-    });
+
+    // sent credential to backend
+
+    // set global login state
+
+    onSubmit({ email, password });
   };
 
   return (
-    <>
+    <div className={classes.modal}>
       <Typography
         variant="h5"
         style={{ textAlign: "center", paddingTop: "20px" }}
       >
-        Create Barcode
+        Login Account
       </Typography>
       <Box
         style={{ textAlign: "center" }}
@@ -68,27 +70,23 @@ const Form = ({ onSubmit }) => {
         autoComplete="off"
       >
         <TextField
-          style={{ width: "80%", marginTop: "20px" }}
-          id="vipCode"
-          label="VIP Code"
-          onChange={textInputHandler.bind(this, "vipCode")}
+          style={{ width: "80%", marginTop: "50px" }}
+          id="email"
+          label="Email"
+          onChange={textInputHandler.bind(this, "email")}
           variant="standard"
-          error={!inputValues.vipCode.isValid}
-          helperText={
-            !inputValues.vipCode.isValid ? "VIP Code must be 12 digits" : " "
-          }
+          error={!inputValues.email.isValid}
+          helperText={!inputValues.email.isValid ? "Invalid Email" : " "}
         />
         <TextField
           style={{ width: "80%", marginTop: "20px" }}
-          id="customerName"
-          label="Customer Name"
-          onChange={textInputHandler.bind(this, "customerName")}
+          id="standard-basic"
+          label="Password"
+          onChange={textInputHandler.bind(this, "password")}
           variant="standard"
-          error={!inputValues.customerName.isValid}
+          error={!inputValues.password.isValid}
           helperText={
-            !inputValues.customerName.isValid
-              ? "Customer Name must not be empty"
-              : " "
+            !inputValues.password.isValid ? "Password must not be empty" : ""
           }
         />
       </Box>
@@ -96,15 +94,16 @@ const Form = ({ onSubmit }) => {
         style={{
           display: "flex",
           justifyContent: "center",
-          marginTop: "40px",
+          marginTop: "80px",
+          marginBottom: "20px",
         }}
       >
         <Button variant="contained" onClick={submitHandler}>
-          Create
+          Login
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 
-export default Form;
+export default LoginForm;

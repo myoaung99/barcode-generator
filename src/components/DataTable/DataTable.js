@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Container from "@mui/material/Container";
 import { DataGrid } from "@mui/x-data-grid";
 import BarcodePreview from "./BarcodePreview";
@@ -9,56 +9,76 @@ import Actions from "./Actions";
 const rows = [
   {
     id: 1,
-    col1: "0020921912",
-    col2: "Myo Myint Aung",
-    col4: "TUN TUN",
-    col5: getFormattedDate(new Date()),
+    code: "0020921912",
+    customerName: "Myo Myint Aung",
+    adminName: "TUN TUN",
+    date: getFormattedDate(new Date()),
+  },
+  {
+    id: 2,
+    code: "0020921912",
+    customerName: "Myo Myint Aung",
+    adminName: "TUN TUN",
+    date: getFormattedDate(new Date()),
   },
 ];
 
 // TODO: get dynamic data
 const columns = [
   {
-    field: "col1",
+    field: "code",
     headerName: "VIP Code",
     minWidth: 150,
     flex: 1,
     editable: true,
   },
   {
-    field: "col2",
+    field: "customerName",
     headerName: "Customer Name",
     minWidth: 150,
     flex: 1,
     editable: true,
   },
   {
-    field: "col3",
+    field: "barcode",
     headerName: "Barcode",
     minWidth: 150,
     flex: 1,
-    renderCell: () => <BarcodePreview />,
+    renderCell: (params) => <BarcodePreview params={params} />,
   },
-  { field: "col4", headerName: "Created By", minWidth: 150, flex: 1 },
-  { field: "col5", headerName: "Created At", minWidth: 200, flex: 1 },
+  { field: "adminName", headerName: "Created By", minWidth: 150, flex: 1 },
+  { field: "date", headerName: "Created At", minWidth: 200, flex: 1 },
   {
-    field: "col6",
+    field: "actions",
     headerName: "Actions",
     minWidth: 150,
     flex: 1,
-    renderCell: () => <Actions />,
+    renderCell: (params) => <Actions params={params} />,
   },
 ];
 
 const DataTable = () => {
+  const rowUpdateHandler = useCallback(async (newRow) => {
+    // TODO: Make the HTTP request to save in the backend
+    // update row
+    console.log(newRow);
+  }, []);
+
+  const rowUpdateErrorHandler = useCallback((error) => {
+    console.log(error);
+  }, []);
+
   return (
     <div style={{ display: "flex", height: "85%" }}>
       <div style={{ flexGrow: 1, backgroundColor: "white" }}>
         <DataGrid
+          experimentalFeatures={{ newEditingApi: true }}
           rows={rows}
           columns={columns}
           getRowHeight={() => "auto"}
           style={{ padding: "10px" }}
+          processRowUpdate={rowUpdateHandler}
+          onProcessRowUpdateError={rowUpdateErrorHandler}
         />
       </div>
     </div>

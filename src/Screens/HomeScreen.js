@@ -1,8 +1,8 @@
 import { useState } from "react";
-import ActionButtons from "../ActionButtons";
-import DataTable from "./../DataTable/DataTable";
-import Layout from "./../Layout/Layout";
-import Modal from "./../Overlay/Modal";
+import ActionButtons from "../components/ActionButtons";
+import DataTable from "../components/DataTable/DataTable";
+import Layout from "../components/Layout/Layout";
+import Modal from "../components/Overlay/Modal";
 
 function HomeScreen() {
   const [modalIsShown, setModalIsShown] = useState(false);
