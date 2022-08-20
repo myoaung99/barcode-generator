@@ -3,8 +3,15 @@ import { Button } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { logoutUser } from "../store/auth-slice";
+import { useDispatch } from "react-redux";
 
 const ActionButtons = ({ toggleModal }) => {
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(logoutUser());
+  };
   return (
     <div
       style={{
@@ -46,6 +53,16 @@ const ActionButtons = ({ toggleModal }) => {
           onClick={() => console.log("Download All")}
         >
           Download All
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          size="small"
+          endIcon={<LogoutIcon />}
+          style={{ marginRight: 10 }}
+          onClick={logoutHandler}
+        >
+          Logout
         </Button>
       </div>
     </div>

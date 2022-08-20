@@ -6,7 +6,7 @@ import classes from "./LoginForm.module.css";
 
 const LoginForm = ({ onSubmit }) => {
   const [inputValues, setInputValues] = useState({
-    email: {
+    username: {
       value: "",
       isValid: true,
     },
@@ -29,16 +29,16 @@ const LoginForm = ({ onSubmit }) => {
   const submitHandler = () => {
     // TODO: add validation
 
-    const email = inputValues.email.value;
+    const username = inputValues.username.value;
     const password = inputValues.password.value;
 
-    const emailIsValid = email.includes("@");
+    const usernameIsValid = !!username;
     const passwordIsValid = !!password;
 
-    if (!emailIsValid) {
+    if (!usernameIsValid || !passwordIsValid) {
       setInputValues((current) => {
         return {
-          email: { value: current.email.value, isValid: emailIsValid },
+          username: { value: current.username.value, isValid: usernameIsValid },
           password: {
             value: current.password.value,
             isValid: passwordIsValid,
@@ -52,7 +52,7 @@ const LoginForm = ({ onSubmit }) => {
 
     // set global login state
 
-    onSubmit({ email, password });
+    onSubmit({ username, password });
   };
 
   return (
@@ -71,12 +71,14 @@ const LoginForm = ({ onSubmit }) => {
       >
         <TextField
           style={{ width: "80%", marginTop: "50px" }}
-          id="email"
-          label="Email"
-          onChange={textInputHandler.bind(this, "email")}
+          id="username"
+          label="User Name"
+          onChange={textInputHandler.bind(this, "username")}
           variant="standard"
-          error={!inputValues.email.isValid}
-          helperText={!inputValues.email.isValid ? "Invalid Email" : " "}
+          error={!inputValues.username.isValid}
+          helperText={
+            !inputValues.username.isValid ? "User name must not be empty" : " "
+          }
         />
         <TextField
           style={{ width: "80%", marginTop: "20px" }}
