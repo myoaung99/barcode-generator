@@ -3,22 +3,24 @@ import ActionButtons from "../components/ActionButtons";
 import DataTable from "../components/DataTable/DataTable";
 import Layout from "../components/Layout/Layout";
 import Modal from "../components/Overlay/Modal";
-import { AuthContext } from "../store/auth-context";
 import { Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { authenticate } from "./../store/auth-slice";
+import { setCustomer } from "./../store/customer-slice";
 import { getAllMembers } from "./../utils/https";
 
 function DashboardScreen() {
   const [modalIsShown, setModalIsShown] = useState(false);
   const token = useSelector((store) => store.auth.token);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchCustomers = async () => {
-      getAllMembers(token);
+      const customers = await getAllMembers(token);
+      dispatch(setCustomer(customers));
     };
     fetchCustomers();
-  }, [token]);
+  }, [token, dispatch]);
 
   const toggleModalHandler = () => {
     setModalIsShown((currentState) => !currentState);

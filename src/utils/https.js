@@ -10,7 +10,7 @@ export const getAllMembers = async (token) => {
     }
   );
 
-  console.log(response);
+  return response.data.members;
 };
 
 const authenticate = async (username, password) => {

@@ -10,8 +10,10 @@ export const customerSlice = createSlice({
   reducers: {
     addCustomer: (state, actions) => {},
     updateCustomer: (state, actions) => {},
-    deleteCustomer: (state, action) => {},
-    setCustomer: (state, action) => {},
+    deleteCustomer: (state, actions) => {},
+    setCustomer: (state, actions) => {
+      state.customers = actions.payload;
+    },
   },
 });
 

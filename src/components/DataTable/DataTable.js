@@ -4,36 +4,19 @@ import { DataGrid } from "@mui/x-data-grid";
 import BarcodePreview from "./BarcodePreview";
 import { getFormattedDate } from "../../utils/date";
 import Actions from "./Actions";
-
-// TODO: get dynamic data
-const rows = [
-  {
-    id: 1,
-    code: "0020921912",
-    customerName: "Myo Myint Aung",
-    adminName: "TUN TUN",
-    date: getFormattedDate(new Date()),
-  },
-  {
-    id: 2,
-    code: "0020921912",
-    customerName: "Myo Myint Aung",
-    adminName: "TUN TUN",
-    date: getFormattedDate(new Date()),
-  },
-];
+import { useSelector } from "react-redux";
 
 // TODO: get dynamic data
 const columns = [
   {
-    field: "code",
+    field: "vip_code",
     headerName: "VIP Code",
     minWidth: 150,
     flex: 1,
     editable: true,
   },
   {
-    field: "customerName",
+    field: "customer_name",
     headerName: "Customer Name",
     minWidth: 150,
     flex: 1,
@@ -46,8 +29,8 @@ const columns = [
     flex: 1,
     renderCell: (params) => <BarcodePreview params={params} />,
   },
-  { field: "adminName", headerName: "Created By", minWidth: 150, flex: 1 },
-  { field: "date", headerName: "Created At", minWidth: 200, flex: 1 },
+  { field: "createdBy", headerName: "Created By", minWidth: 150, flex: 1 },
+  { field: "createdAt", headerName: "Created At", minWidth: 200, flex: 1 },
   {
     field: "actions",
     headerName: "Actions",
@@ -58,6 +41,9 @@ const columns = [
 ];
 
 const DataTable = () => {
+  const customers = useSelector((state) => state.customer.customers);
+  console.log(customers);
+
   const rowUpdateHandler = useCallback(async (newRow) => {
     // TODO: Make the HTTP request to save in the backend
     // update row
@@ -73,7 +59,7 @@ const DataTable = () => {
       <div style={{ flexGrow: 1, backgroundColor: "white" }}>
         <DataGrid
           experimentalFeatures={{ newEditingApi: true }}
-          rows={rows}
+          rows={customers}
           columns={columns}
           getRowHeight={() => "auto"}
           style={{ padding: "10px" }}
