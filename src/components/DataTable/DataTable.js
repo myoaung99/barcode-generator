@@ -5,7 +5,7 @@ import BarcodePreview from "./BarcodePreview";
 import { getFormattedDate } from "../../utils/date";
 import Actions from "./Actions";
 import { useSelector } from "react-redux";
-import LinearProgress from "@mui/material/LinearProgress";
+import CustomNoRowsOverlay from "../UI/CustomNoRowsOverlay";
 
 // TODO: get dynamic data
 const columns = [
@@ -61,6 +61,9 @@ const DataTable = ({ isFetching }) => {
           experimentalFeatures={{ newEditingApi: true }}
           rows={customers}
           columns={columns}
+          components={{
+            NoRowsOverlay: CustomNoRowsOverlay,
+          }}
           loading={isFetching}
           getRowHeight={() => "auto"}
           style={{ padding: "10px" }}

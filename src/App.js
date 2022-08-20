@@ -6,6 +6,7 @@ import CreateAdminScreen from "./Screens/CreateAdmin";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authenticate } from "./store/auth-slice";
+import CustomNoRowsOverlay from "./components/UI/CustomNoRowsOverlay";
 
 function App() {
   const dispatch = useDispatch();

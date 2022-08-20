@@ -4,8 +4,9 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button, Typography } from "@mui/material";
 import classes from "./LoginForm.module.css";
+import { LoadingButton } from "@mui/lab";
 
-const LoginForm = ({ onSubmit, login }) => {
+const LoginForm = ({ onSubmit, login, isLoggingIn }) => {
   const [inputValues, setInputValues] = useState({
     username: {
       value: "",
@@ -29,13 +30,13 @@ const LoginForm = ({ onSubmit, login }) => {
     }));
   };
 
-  const toggleMode = () => {
-    if (login) {
-      navigate("/createAdmin");
-    } else {
-      navigate("/login");
-    }
-  };
+  // const toggleMode = () => {
+  //   if (login) {
+  //     navigate("/createAdmin");
+  //   } else {
+  //     navigate("/login");
+  //   }
+  // };
 
   const submitHandler = () => {
     // TODO: add validation
@@ -111,9 +112,14 @@ const LoginForm = ({ onSubmit, login }) => {
           marginBottom: "30px",
         }}
       >
-        <Button variant="contained" onClick={submitHandler}>
+        <LoadingButton
+          loading={isLoggingIn}
+          size="large"
+          variant="contained"
+          onClick={submitHandler}
+        >
           {login ? "Login" : "Create"}
-        </Button>
+        </LoadingButton>
       </div>
     </div>
   );
