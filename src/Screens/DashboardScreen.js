@@ -5,12 +5,18 @@ import Layout from "../components/Layout/Layout";
 import Modal from "../components/Overlay/Modal";
 import { Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { authenticate } from "./../store/auth-slice";
 import { setCustomer } from "./../store/customer-slice";
 import { getAllMembers } from "./../utils/https";
+import LoadingOverlay from "./../components/Overlay/LoadingOverlay";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function DashboardScreen() {
   const [modalIsShown, setModalIsShown] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  const [creatingCustomer, setCreatingCustomer] = useState(false);
+  const [errorInCreation, setErrorInCreation] = useState(false);
+
   const token = useSelector((store) => store.auth.token);
   const dispatch = useDispatch();
 
@@ -19,7 +25,12 @@ function DashboardScreen() {
       const customers = await getAllMembers(token);
       dispatch(setCustomer(customers));
     };
-    fetchCustomers();
+
+    try {
+      fetchCustomers();
+    } catch (e) {
+      setHasError(true);
+    }
   }, [token, dispatch]);
 
   const toggleModalHandler = () => {
@@ -27,7 +38,12 @@ function DashboardScreen() {
   };
 
   const submitHandler = (data) => {
-    console.log(data);
+    setCreatingCustomer(true);
+    setTimeout(() => {
+      console.log(data);
+      setCreatingCustomer(false);
+    }, 3000);
+
     toggleModalHandler();
   };
 
@@ -36,7 +52,7 @@ function DashboardScreen() {
       <Layout>
         <ActionButtons toggleModal={toggleModalHandler} />
         <DataTable />
-
+        {creatingCustomer && <LoadingOverlay />}
         {modalIsShown && (
           <Modal onClose={toggleModalHandler} onSubmit={submitHandler} />
         )}

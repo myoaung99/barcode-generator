@@ -5,6 +5,7 @@ import BarcodePreview from "./BarcodePreview";
 import { getFormattedDate } from "../../utils/date";
 import Actions from "./Actions";
 import { useSelector } from "react-redux";
+import LinearProgress from "@mui/material/LinearProgress";
 
 // TODO: get dynamic data
 const columns = [
@@ -42,7 +43,6 @@ const columns = [
 
 const DataTable = () => {
   const customers = useSelector((state) => state.customer.customers);
-  console.log(customers);
 
   const rowUpdateHandler = useCallback(async (newRow) => {
     // TODO: Make the HTTP request to save in the backend
@@ -61,6 +61,7 @@ const DataTable = () => {
           experimentalFeatures={{ newEditingApi: true }}
           rows={customers}
           columns={columns}
+          loading={customers.length === 0}
           getRowHeight={() => "auto"}
           style={{ padding: "10px" }}
           processRowUpdate={rowUpdateHandler}

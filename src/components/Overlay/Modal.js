@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDom from "react-dom";
-import Form from "./Form";
+import ModalForm from "./ModalForm";
 import classes from "./Modal.module.css";
 
 const Backdrop = (props) => {
@@ -10,7 +10,7 @@ const Backdrop = (props) => {
 const ModalOverlay = ({ onSubmit }) => {
   return (
     <div className={classes.modal}>
-      <Form onSubmit={onSubmit} />
+      <ModalForm onSubmit={onSubmit} />
     </div>
   );
 };

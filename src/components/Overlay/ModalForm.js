@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button, Typography } from "@mui/material";
 
-const Form = ({ onSubmit }) => {
+const ModalForm = ({ onSubmit }) => {
   const [inputValues, setInputValues] = useState({
     vipCode: {
       value: "",
@@ -71,6 +71,7 @@ const Form = ({ onSubmit }) => {
           style={{ width: "80%", marginTop: "20px" }}
           id="vipCode"
           label="VIP Code"
+          autoFocus={true}
           onChange={textInputHandler.bind(this, "vipCode")}
           variant="standard"
           error={!inputValues.vipCode.isValid}
@@ -107,4 +108,4 @@ const Form = ({ onSubmit }) => {
   );
 };
 
-export default Form;
+export default ModalForm;
