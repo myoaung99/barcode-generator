@@ -1,22 +1,19 @@
 import React from "react";
 import LoginForm from "../components/Login/LoginForm";
-import { loginAdmin } from "../utils/https";
+import { loginUser } from "../utils/https";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authenticate } from "../store/auth-slice";
 
-const LoginScreen = (props) => {
+const CreateAdminScreen = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const submitHandler = async (data) => {
-    const token = await loginAdmin(data.username, data.password);
-    if (token) {
-      dispatch(authenticate(token));
-      navigate("/dashboard");
-    }
+    // TODO: do something with the data
+    console.log(data);
   };
-  return <LoginForm onSubmit={submitHandler} login />;
+  return <LoginForm onSubmit={submitHandler} />;
 };
 
-export default LoginScreen;
+export default CreateAdminScreen;

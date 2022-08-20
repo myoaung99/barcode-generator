@@ -41,7 +41,7 @@ const columns = [
   },
 ];
 
-const DataTable = () => {
+const DataTable = ({ isFetching }) => {
   const customers = useSelector((state) => state.customer.customers);
 
   const rowUpdateHandler = useCallback(async (newRow) => {
@@ -61,7 +61,7 @@ const DataTable = () => {
           experimentalFeatures={{ newEditingApi: true }}
           rows={customers}
           columns={columns}
-          loading={customers.length === 0}
+          loading={isFetching}
           getRowHeight={() => "auto"}
           style={{ padding: "10px" }}
           processRowUpdate={rowUpdateHandler}

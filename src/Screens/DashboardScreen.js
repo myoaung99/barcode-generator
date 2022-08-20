@@ -5,14 +5,15 @@ import Layout from "../components/Layout/Layout";
 import Modal from "../components/Overlay/Modal";
 import { Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setCustomer } from "./../store/customer-slice";
-import { getAllMembers } from "./../utils/https";
+import { setCustomer, addCustomer } from "./../store/customer-slice";
+import { createBarcode, getAllMembers } from "./../utils/https";
 import LoadingOverlay from "./../components/Overlay/LoadingOverlay";
 import CircularProgress from "@mui/material/CircularProgress";
 
 function DashboardScreen() {
   const [modalIsShown, setModalIsShown] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [fetchingCustomers, setFetchingCustomers] = useState(true);
+  const [errorInFetching, setErrorInFetching] = useState(false);
 
   const [creatingCustomer, setCreatingCustomer] = useState(false);
   const [errorInCreation, setErrorInCreation] = useState(false);
@@ -24,12 +25,14 @@ function DashboardScreen() {
     const fetchCustomers = async () => {
       const customers = await getAllMembers(token);
       dispatch(setCustomer(customers));
+      setFetchingCustomers(false);
     };
 
     try {
       fetchCustomers();
     } catch (e) {
-      setHasError(true);
+      setErrorInFetching(true);
+      setFetchingCustomers(false);
     }
   }, [token, dispatch]);
 
@@ -37,13 +40,17 @@ function DashboardScreen() {
     setModalIsShown((currentState) => !currentState);
   };
 
-  const submitHandler = (data) => {
+  const submitHandler = async (data) => {
     setCreatingCustomer(true);
-    setTimeout(() => {
-      console.log(data);
-      setCreatingCustomer(false);
-    }, 3000);
 
+    try {
+      const createdCustomer = await createBarcode({ ...data }, token);
+      dispatch(addCustomer(createdCustomer));
+    } catch (e) {
+      console.log(e);
+    }
+
+    setCreatingCustomer(false);
     toggleModalHandler();
   };
 
@@ -51,10 +58,14 @@ function DashboardScreen() {
     return (
       <Layout>
         <ActionButtons toggleModal={toggleModalHandler} />
-        <DataTable />
+        <DataTable isFetching={fetchingCustomers} />
         {creatingCustomer && <LoadingOverlay />}
         {modalIsShown && (
-          <Modal onClose={toggleModalHandler} onSubmit={submitHandler} />
+          <Modal
+            onClose={toggleModalHandler}
+            isSubmitting={creatingCustomer}
+            onSubmit={submitHandler}
+          />
         )}
       </Layout>
     );

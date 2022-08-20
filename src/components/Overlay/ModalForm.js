@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
-const ModalForm = ({ onSubmit }) => {
+const ModalForm = ({ onSubmit, isSubmitting }) => {
   const [inputValues, setInputValues] = useState({
     vipCode: {
       value: "",
@@ -28,10 +29,7 @@ const ModalForm = ({ onSubmit }) => {
   const submitHandler = () => {
     // TODO: add validation
 
-    const numberVipCode = Number(inputValues.vipCode.value);
-
-    const vipCodeIsValid =
-      !isNaN(numberVipCode) && inputValues.vipCode.value.trim().length === 12;
+    const vipCodeIsValid = inputValues.vipCode.value.trim().length === 10;
 
     const nameIsValid = inputValues.customerName.value.trim().length > 0;
 
@@ -48,8 +46,8 @@ const ModalForm = ({ onSubmit }) => {
       return;
     }
     onSubmit({
-      vipCode: numberVipCode,
-      customerName: inputValues.customerName.value,
+      vip_code: inputValues.vipCode.value,
+      customer_name: inputValues.customerName.value,
     });
   };
 
@@ -76,7 +74,7 @@ const ModalForm = ({ onSubmit }) => {
           variant="standard"
           error={!inputValues.vipCode.isValid}
           helperText={
-            !inputValues.vipCode.isValid ? "VIP Code must be 12 digits" : " "
+            !inputValues.vipCode.isValid ? "VIP Code must be 10 digits" : " "
           }
         />
         <TextField
@@ -100,9 +98,18 @@ const ModalForm = ({ onSubmit }) => {
           marginTop: "40px",
         }}
       >
-        <Button variant="contained" onClick={submitHandler}>
+        {/* <Button variant="contained" onClick={submitHandler}>
           Create
-        </Button>
+        </Button> */}
+
+        <LoadingButton
+          size="large"
+          onClick={submitHandler}
+          loading={isSubmitting}
+          variant="contained"
+        >
+          Create
+        </LoadingButton>
       </div>
     </>
   );

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button, Typography } from "@mui/material";
 import classes from "./LoginForm.module.css";
 
-const LoginForm = ({ onSubmit }) => {
+const LoginForm = ({ onSubmit, login }) => {
   const [inputValues, setInputValues] = useState({
     username: {
       value: "",
@@ -16,6 +17,8 @@ const LoginForm = ({ onSubmit }) => {
     },
   });
 
+  const navigate = useNavigate();
+
   const textInputHandler = (inputType, event) => {
     setInputValues((currentValue) => ({
       ...currentValue,
@@ -24,6 +27,14 @@ const LoginForm = ({ onSubmit }) => {
         isValid: true,
       },
     }));
+  };
+
+  const toggleMode = () => {
+    if (login) {
+      navigate("/createAdmin");
+    } else {
+      navigate("/login");
+    }
   };
 
   const submitHandler = () => {
@@ -61,7 +72,7 @@ const LoginForm = ({ onSubmit }) => {
         variant="h5"
         style={{ textAlign: "center", paddingTop: "20px" }}
       >
-        Login Account
+        {login ? "Login Account" : "Create Admin Account"}
       </Typography>
       <Box
         style={{ textAlign: "center" }}
@@ -96,12 +107,12 @@ const LoginForm = ({ onSubmit }) => {
         style={{
           display: "flex",
           justifyContent: "center",
-          marginTop: "80px",
-          marginBottom: "20px",
+          marginTop: "50px",
+          marginBottom: "30px",
         }}
       >
         <Button variant="contained" onClick={submitHandler}>
-          Login
+          {login ? "Login" : "Create"}
         </Button>
       </div>
     </div>
