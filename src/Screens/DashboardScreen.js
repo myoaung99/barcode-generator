@@ -55,24 +55,24 @@ function DashboardScreen() {
     toggleModalHandler();
   };
 
-  if (!!token) {
-    return (
-      <Layout>
-        <ActionButtons toggleModal={toggleModalHandler} />
-        <DataTable loading={fetchingCustomers} rows={customers} />
-        {creatingCustomer && <LoadingOverlay />}
-        {modalIsShown && (
-          <Modal
-            onClose={toggleModalHandler}
-            isSubmitting={creatingCustomer}
-            onSubmit={submitHandler}
-          />
-        )}
-      </Layout>
-    );
-  } else {
+  if (!token) {
     return <Navigate replace to="/login" />;
   }
+
+  return (
+    <Layout>
+      <ActionButtons toggleModal={toggleModalHandler} />
+      <DataTable loading={fetchingCustomers} rows={customers} />
+      {creatingCustomer && <LoadingOverlay />}
+      {modalIsShown && (
+        <Modal
+          onClose={toggleModalHandler}
+          isSubmitting={creatingCustomer}
+          onSubmit={submitHandler}
+        />
+      )}
+    </Layout>
+  );
 }
 
 export default DashboardScreen;

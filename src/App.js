@@ -3,14 +3,21 @@ import "./App.css";
 import DashboardScreen from "./Screens/DashboardScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import CreateAdmin from "./Screens/CreateAdmin";
+import AllAdmins from "./Screens/AllAdmins";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authenticate } from "./store/auth-slice";
-import AllAdmins from "./Screens/AllAdmins";
 
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("barcodeToken");
+    if (token) {
+      dispatch(authenticate(token));
+    }
+  }, [dispatch, navigate]);
 
   return (
     <>

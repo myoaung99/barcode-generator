@@ -56,9 +56,20 @@ export const loginSystemAdmin = async (username, password) => {
   return response.data.token;
 };
 
-export const createSystemAdmin = async (username, password, token) => {
-  const url = BACKEND_URL + "/auth/admin";
+// admims
 
+export const getAllSystemAdmins = async (token) => {
+  const response = await axios.get(BACKEND_URL + "/admin", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.admins;
+};
+
+export const createSystemAdmin = async (username, password, token) => {
+  const url = BACKEND_URL + "/admin";
   const response = await axios.post(
     url,
     {
@@ -71,18 +82,5 @@ export const createSystemAdmin = async (username, password, token) => {
       },
     }
   );
-  console.log(response);
-  // return response.data.token;
-};
-
-// admims
-
-export const getAllSystemAdmins = async (token) => {
-  const response = await axios.get(BACKEND_URL + "/admin", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return response.data.admins;
+  return response.data.createdAdmin;
 };

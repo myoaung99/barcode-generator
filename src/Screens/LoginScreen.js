@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import LoginForm from "../components/Login/LoginForm";
 import { loginSystemAdmin } from "../utils/https";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authenticate } from "../store/auth-slice";
 
@@ -11,13 +11,14 @@ const LoginScreen = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const token = useSelector((state) => state.auth.token);
+
   useEffect(() => {
-    const token = localStorage.getItem("barcodeToken");
     if (token) {
       dispatch(authenticate(token));
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     }
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, token]);
 
   const submitHandler = async (data) => {
     setIsLoggingIn(true);
@@ -30,7 +31,7 @@ const LoginScreen = (props) => {
   };
   return (
     <>
-      <LoginForm onSubmit={submitHandler} isLoggingIn={isLoggingIn} login />
+      <LoginForm onSubmit={submitHandler} isLoading={isLoggingIn} login />
     </>
   );
 };

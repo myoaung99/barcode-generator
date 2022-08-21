@@ -6,7 +6,7 @@ import { Button, Typography } from "@mui/material";
 import classes from "./LoginForm.module.css";
 import { LoadingButton } from "@mui/lab";
 
-const LoginForm = ({ onSubmit, login, isLoggingIn }) => {
+const LoginForm = ({ onSubmit, login, isLoading }) => {
   const [inputValues, setInputValues] = useState({
     username: {
       value: "",
@@ -97,7 +97,7 @@ const LoginForm = ({ onSubmit, login, isLoggingIn }) => {
         }}
       >
         <LoadingButton
-          loading={isLoggingIn}
+          loading={isLoading}
           size="large"
           variant="contained"
           onClick={submitHandler}
