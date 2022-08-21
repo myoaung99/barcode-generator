@@ -3,8 +3,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteCustomer } from "../../utils/https";
+import { deleteCustomer, deleteSystemAdmin } from "../../utils/https";
 import { removeCustomer } from "./../../store/customer-slice";
+import { removeAdmin } from "../../store/admin-slice";
 import { LoadingButton } from "@mui/lab";
 import { saveAs } from "file-saver";
 
@@ -22,8 +23,11 @@ const Actions = ({ params, admins }) => {
   const deleteHandler = async () => {
     setIsDeleting(true);
 
+    // TODO: Error handling
     if (admins) {
       // delete admin
+      await deleteSystemAdmin(params.row._id, token);
+      dispatch(removeAdmin(params.row._id));
     } else {
       // delete customer
       await deleteCustomer(params.row.id, token);

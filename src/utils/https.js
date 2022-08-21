@@ -8,7 +8,6 @@ export const getAllMembers = async (token) => {
       Authorization: `Bearer ${token}`,
     },
   });
-
   return response.data.members;
 };
 
@@ -32,8 +31,7 @@ export const createBarcode = async (data, token) => {
 };
 
 export const deleteCustomer = async (customer_id, token) => {
-  const url =
-    "https://glow-test-api.herokuapp.com/api/v1/customer/" + customer_id;
+  const url = BACKEND_URL + "/customer/" + customer_id;
 
   const response = await axios.delete(url, {
     headers: {
@@ -83,4 +81,17 @@ export const createSystemAdmin = async (username, password, token) => {
     }
   );
   return response.data.createdAdmin;
+};
+
+export const deleteSystemAdmin = async (admin_id, token) => {
+  const url = BACKEND_URL + "/admin/" + admin_id;
+
+  const response = await axios.delete(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  console.log(response);
+  // return response.data.deletedCustomer.customer_name;
 };
