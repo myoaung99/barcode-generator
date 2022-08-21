@@ -1,17 +1,32 @@
 import React from "react";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import DownloadIcon from "@mui/icons-material/Download";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { logoutUser } from "../store/auth-slice";
 import { useDispatch } from "react-redux";
+import CustomButton from "./UI/CustomButton";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 
 const ActionButtons = ({ toggleModal }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const logoutHandler = () => {
     dispatch(logoutUser());
   };
+
+  const navigateToCreateAdminHandler = () => {
+    navigate("/dashboard/createAdmin");
+  };
+
+  const navigateToAllAdminsHandler = () => {
+    navigate("/dashboard/admins");
+  };
+
   return (
     <div
       style={{
@@ -22,48 +37,50 @@ const ActionButtons = ({ toggleModal }) => {
       }}
     >
       <div>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
+        <CustomButton
           startIcon={<AddCircleOutlineIcon />}
-          style={{ marginRight: 10 }}
           onClick={() => toggleModal()}
         >
-          Add Customer
-        </Button>
+          Create Barcode
+        </CustomButton>
+
+        <CustomButton
+          startIcon={<SupervisorAccountIcon />}
+          onClick={navigateToAllAdminsHandler}
+        >
+          Admins
+        </CustomButton>
+
+        <CustomButton
+          color="warning"
+          startIcon={<AdminPanelSettingsIcon />}
+          onClick={navigateToCreateAdminHandler}
+        >
+          Create Admin
+        </CustomButton>
       </div>
       <div>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
+        <CustomButton
           startIcon={<FilterListIcon />}
-          style={{ marginRight: 10 }}
           onClick={() => console.log("Filter List ")}
         >
           Filter
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
+        </CustomButton>
+
+        <CustomButton
           startIcon={<DownloadIcon />}
-          style={{ marginRight: 10 }}
           onClick={() => console.log("Download All")}
         >
           Download All
-        </Button>
-        <Button
+        </CustomButton>
+
+        <CustomButton
           variant="outlined"
-          color="primary"
-          size="small"
           endIcon={<LogoutIcon />}
-          style={{ marginRight: 10 }}
           onClick={logoutHandler}
         >
           Logout
-        </Button>
+        </CustomButton>
       </div>
     </div>
   );

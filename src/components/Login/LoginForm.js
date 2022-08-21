@@ -18,8 +18,6 @@ const LoginForm = ({ onSubmit, login, isLoggingIn }) => {
     },
   });
 
-  const navigate = useNavigate();
-
   const textInputHandler = (inputType, event) => {
     setInputValues((currentValue) => ({
       ...currentValue,
@@ -30,17 +28,7 @@ const LoginForm = ({ onSubmit, login, isLoggingIn }) => {
     }));
   };
 
-  // const toggleMode = () => {
-  //   if (login) {
-  //     navigate("/createAdmin");
-  //   } else {
-  //     navigate("/login");
-  //   }
-  // };
-
   const submitHandler = () => {
-    // TODO: add validation
-
     const username = inputValues.username.value;
     const password = inputValues.password.value;
 
@@ -59,10 +47,6 @@ const LoginForm = ({ onSubmit, login, isLoggingIn }) => {
       });
       return;
     }
-
-    // sent credential to backend
-
-    // set global login state
 
     onSubmit({ username, password });
   };
@@ -118,7 +102,7 @@ const LoginForm = ({ onSubmit, login, isLoggingIn }) => {
           variant="contained"
           onClick={submitHandler}
         >
-          {login ? "Login" : "Create"}
+          {login ? "Login" : "Create Admin"}
         </LoadingButton>
       </div>
     </div>

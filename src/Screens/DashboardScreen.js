@@ -8,7 +8,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setCustomer, addCustomer } from "./../store/customer-slice";
 import { createBarcode, getAllMembers } from "./../utils/https";
 import LoadingOverlay from "./../components/Overlay/LoadingOverlay";
-import CircularProgress from "@mui/material/CircularProgress";
 
 function DashboardScreen() {
   const [modalIsShown, setModalIsShown] = useState(false);
@@ -20,6 +19,8 @@ function DashboardScreen() {
 
   const token = useSelector((store) => store.auth.token);
   const dispatch = useDispatch();
+
+  const customers = useSelector((state) => state.customer.customers);
 
   useEffect(() => {
     const fetchCustomers = async () => {
@@ -58,7 +59,7 @@ function DashboardScreen() {
     return (
       <Layout>
         <ActionButtons toggleModal={toggleModalHandler} />
-        <DataTable isFetching={fetchingCustomers} />
+        <DataTable loading={fetchingCustomers} rows={customers} />
         {creatingCustomer && <LoadingOverlay />}
         {modalIsShown && (
           <Modal

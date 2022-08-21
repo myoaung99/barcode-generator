@@ -7,42 +7,71 @@ import Actions from "./Actions";
 import { useSelector } from "react-redux";
 import CustomNoRowsOverlay from "../UI/CustomNoRowsOverlay";
 
-// TODO: get dynamic data
-const columns = [
-  {
-    field: "vip_code",
-    headerName: "VIP Code",
-    minWidth: 150,
-    flex: 1,
-    editable: true,
-  },
-  {
-    field: "customer_name",
-    headerName: "Customer Name",
-    minWidth: 150,
-    flex: 1,
-    editable: true,
-  },
-  {
-    field: "barcode",
-    headerName: "Barcode",
-    minWidth: 150,
-    flex: 1,
-    renderCell: (params) => <BarcodePreview params={params} />,
-  },
-  { field: "createdBy", headerName: "Created By", minWidth: 150, flex: 1 },
-  { field: "createdAt", headerName: "Created At", minWidth: 200, flex: 1 },
-  {
-    field: "actions",
-    headerName: "Actions",
-    minWidth: 150,
-    flex: 1,
-    renderCell: (params) => <Actions params={params} />,
-  },
-];
+const DataTable = (props) => {
+  // TODO: get dynamic data
+  let columns = [
+    {
+      field: "vip_code",
+      headerName: "VIP Code",
+      minWidth: 150,
+      flex: 1,
+      editable: true,
+    },
+    {
+      field: "customer_name",
+      headerName: "Customer Name",
+      minWidth: 150,
+      flex: 1,
+      editable: true,
+    },
+    {
+      field: "barcode",
+      headerName: "Barcode",
+      minWidth: 150,
+      flex: 1,
+      renderCell: (params) => <BarcodePreview params={params} />,
+    },
+    { field: "createdBy", headerName: "Created By", minWidth: 150, flex: 1 },
+    { field: "createdAt", headerName: "Created At", minWidth: 200, flex: 1 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      minWidth: 150,
+      flex: 1,
+      renderCell: (params) => <Actions params={params} />,
+    },
+  ];
 
-const DataTable = ({ isFetching }) => {
-  const customers = useSelector((state) => state.customer.customers);
+  if (props.admins) {
+    columns = [
+      {
+        field: "username",
+        headerName: "Admin Name",
+        minWidth: 150,
+        flex: 1,
+        editable: true,
+      },
+      { field: "createdAt", headerName: "Created At", minWidth: 200, flex: 1 },
+      { field: "createdBy", headerName: "Created By", minWidth: 150, flex: 1 },
+
+      {
+        field: "updatedAt",
+        headerName: "Updated At",
+        minWidth: 150,
+        flex: 1,
+      },
+
+      {
+        field: "actions",
+        headerName: "Actions",
+        minWidth: 150,
+        flex: 1,
+        renderCell: (params) => (
+          <Actions admins={props.admins} params={params} />
+        ),
+      },
+    ];
+  }
 
   const rowUpdateHandler = useCallback(async (newRow) => {
     // TODO: Make the HTTP request to save in the backend
@@ -58,15 +87,14 @@ const DataTable = ({ isFetching }) => {
     <div style={{ display: "flex", height: "85%" }}>
       <div style={{ flexGrow: 1, backgroundColor: "white" }}>
         <DataGrid
-          experimentalFeatures={{ newEditingApi: true }}
-          rows={customers}
+          {...props}
           columns={columns}
           components={{
             NoRowsOverlay: CustomNoRowsOverlay,
           }}
-          loading={isFetching}
           getRowHeight={() => "auto"}
           style={{ padding: "10px" }}
+          experimentalFeatures={{ newEditingApi: true }}
           processRowUpdate={rowUpdateHandler}
           onProcessRowUpdateError={rowUpdateErrorHandler}
         />
