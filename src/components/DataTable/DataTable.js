@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import Container from "@mui/material/Container";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridCellEditStopReasons } from "@mui/x-data-grid";
 import BarcodePreview from "./BarcodePreview";
 import { getFormattedDate } from "../../utils/date";
 import Actions from "./Actions";
@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import CustomNoRowsOverlay from "../UI/CustomNoRowsOverlay";
 
 const DataTable = (props) => {
+  const editingRow = useRef(null);
   let columns = [
     {
       field: "vip_code",
@@ -72,7 +73,7 @@ const DataTable = (props) => {
     ];
   }
 
-  const rowUpdateHandler = useCallback(async (newRow) => {
+  const rowUpdateHandler = useCallback((newRow) => {
     // TODO: Make the HTTP request to save in the backend
     // update row
     console.log(newRow);
@@ -81,6 +82,27 @@ const DataTable = (props) => {
   const rowUpdateErrorHandler = useCallback((error) => {
     console.log(error);
   }, []);
+
+  const handleCellEditStart = (params) => {
+    editingRow.current = props.rows.find((row) => row.id === params.id);
+    console.log(editingRow);
+  };
+
+  const handleCellEditStop = (params) => {
+    // if (params.reason === GridCellEditStopReasons.escapeKeyDown) {
+    //   setRows((prevRows) =>
+    //     prevRows.map((row) =>
+    //       row.id === editingRow.current.id
+    //         ? { ...row, account: editingRow.current.account }
+    //         : row
+    //     )
+    //   );
+    // }
+
+    if (params.reason === GridCellEditStopReasons.escapeKeyDown) {
+      console.log("editing stop");
+    }
+  };
 
   return (
     <div style={{ display: "flex", height: "85%" }}>
@@ -92,12 +114,15 @@ const DataTable = (props) => {
             NoRowsOverlay: CustomNoRowsOverlay,
           }}
           pageSize={5}
+          rowsPerPageOptions={[5]}
           paginationMode="server"
           getRowHeight={() => "auto"}
           style={{ padding: "10px" }}
           experimentalFeatures={{ newEditingApi: true }}
-          processRowUpdate={rowUpdateHandler}
-          onProcessRowUpdateError={rowUpdateErrorHandler}
+          onCellEditStart={handleCellEditStart}
+          onCellEditStop={handleCellEditStop}
+          // processRowUpdate={rowUpdateHandler}
+          // onProcessRowUpdateError={rowUpdateErrorHandler}
         />
       </div>
     </div>
