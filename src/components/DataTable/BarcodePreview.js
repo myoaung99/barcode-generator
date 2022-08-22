@@ -5,7 +5,13 @@ function BarcodePreview(props) {
   const { params } = props;
   return (
     <div style={{ paddingTop: 5, paddingBottom: 5 }}>
-      <CardMedia component="img" image={params.row.barcode} alt="" />
+      <CardMedia
+        // style={{ height: 116 }}
+        style={{ height: 80 }}
+        component="img"
+        image={params.row.barcode}
+        alt=""
+      />
     </div>
   );
 }

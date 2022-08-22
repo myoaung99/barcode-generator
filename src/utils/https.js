@@ -2,13 +2,17 @@ import axios from "axios";
 const BACKEND_URL = "https://glow-test-api.herokuapp.com/api/v1";
 
 // customer
-export const getAllMembers = async (token) => {
+export const getAllMembers = async (token, page) => {
   const response = await axios.get(BACKEND_URL + "/customer", {
+    params: {
+      page: page,
+    },
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  return response.data.members;
+  console.log(response);
+  return response.data;
 };
 
 export const createBarcode = async (data, token) => {

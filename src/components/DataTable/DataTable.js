@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import Container from "@mui/material/Container";
 import { DataGrid } from "@mui/x-data-grid";
 import BarcodePreview from "./BarcodePreview";
@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 import CustomNoRowsOverlay from "../UI/CustomNoRowsOverlay";
 
 const DataTable = (props) => {
-  // TODO: get dynamic data
   let columns = [
     {
       field: "vip_code",
@@ -92,6 +91,8 @@ const DataTable = (props) => {
           components={{
             NoRowsOverlay: CustomNoRowsOverlay,
           }}
+          pageSize={5}
+          paginationMode="server"
           getRowHeight={() => "auto"}
           style={{ padding: "10px" }}
           experimentalFeatures={{ newEditingApi: true }}

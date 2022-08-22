@@ -1,7 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  customers: [],
+  customerData: {
+    customers: [],
+    total: 0,
+    totalPage: 0,
+  },
 };
 
 export const customerSlice = createSlice({
@@ -9,16 +13,19 @@ export const customerSlice = createSlice({
   initialState,
   reducers: {
     addCustomer: (state, actions) => {
-      state.customers.unshift(actions.payload);
+      state.customerData.customers.unshift(actions.payload);
+      state.customerData.total += 1;
     },
     updateCustomer: (state, actions) => {},
     removeCustomer: (state, actions) => {
-      state.customers = state.customers.filter(
+      state.customerData.customers = state.customerData.customers.filter(
         (customer) => customer.id !== actions.payload
       );
+      state.customerData.total -= 1;
     },
     setCustomer: (state, actions) => {
-      state.customers = actions.payload;
+      state.customerData.customers = actions.payload.customers;
+      state.customerData.total = actions.payload.total;
     },
   },
 });
