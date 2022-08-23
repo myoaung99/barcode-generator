@@ -16,7 +16,17 @@ export const customerSlice = createSlice({
       state.customerData.customers.unshift(actions.payload);
       state.customerData.total += 1;
     },
-    updateCustomer: (state, actions) => {},
+    updateCustomer: (state, actions) => {
+      const editingCustomerIndex = state.customerData.customers.findIndex(
+        (customer) => customer.id === actions.payload.id
+      );
+
+      if (editingCustomerIndex) {
+        state.customerData.customers[editingCustomerIndex] = {
+          ...actions.payload,
+        };
+      }
+    },
     removeCustomer: (state, actions) => {
       state.customerData.customers = state.customerData.customers.filter(
         (customer) => customer.id !== actions.payload

@@ -45,6 +45,18 @@ export const deleteCustomer = async (customer_id, token) => {
   return response.data.deletedCustomer.customer_name;
 };
 
+export const patchCustomer = async (customer_id, data, token) => {
+  const url = BACKEND_URL + "/customer/" + customer_id;
+
+  const response = await axios.patch(url, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  console.log(response);
+};
+
 // auth
 export const loginSystemAdmin = async (username, password) => {
   const url = BACKEND_URL + "/auth/login";

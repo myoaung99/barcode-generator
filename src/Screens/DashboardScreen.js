@@ -5,8 +5,12 @@ import Layout from "../components/Layout/Layout";
 import Modal from "../components/Overlay/Modal";
 import { Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setCustomer, addCustomer } from "./../store/customer-slice";
-import { createBarcode, getAllMembers } from "./../utils/https";
+import {
+  setCustomer,
+  addCustomer,
+  updateCustomer,
+} from "./../store/customer-slice";
+import { createBarcode, getAllMembers, patchCustomer } from "./../utils/https";
 import LoadingOverlay from "./../components/Overlay/LoadingOverlay";
 
 function DashboardScreen() {
@@ -74,6 +78,24 @@ function DashboardScreen() {
     return <Navigate replace to="/login" />;
   }
 
+  const customerUpdatingHandler = async (customerNewData) => {
+    setFetchingCustomers(true);
+    dispatch(updateCustomer(customerNewData));
+    await patchCustomer(
+      customerNewData.id,
+      {
+        vip_code: customerNewData.vip_code,
+        customer_name: customerNewData.customer_name,
+      },
+      token
+    );
+    // await fetchCustomers();
+    // Update လုပ်တာတဲ့ အစဥ်လိုက်ဖြစ်ချင်ရင် fetchCustomers() ပြန်ခေါ်ဖို့လို but အချိန်ပိုကြာ
+    // page အချိန်းအပြောင်းဖြစ်သွားရင်တော့ အစဥ်လိုက်ဖြစ်ပါသည်
+    setFetchingCustomers(false);
+    return customerNewData;
+  };
+
   return (
     <Layout>
       <ActionButtons toggleModal={toggleModalHandler} />
@@ -83,6 +105,7 @@ function DashboardScreen() {
         rowCount={rowCount}
         page={page}
         onPageChange={pageChangesHandler}
+        processRowUpdate={customerUpdatingHandler}
       />
       {creatingCustomer && <LoadingOverlay />}
       {modalIsShown && (
