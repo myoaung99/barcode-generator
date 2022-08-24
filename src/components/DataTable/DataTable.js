@@ -28,14 +28,19 @@ const DataTable = (props) => {
       minWidth: 150,
       flex: 1,
       renderCell: (params) => <BarcodePreview params={params} />,
+      sortable: false,
     },
-    { field: "createdBy", headerName: "Created By", minWidth: 150, flex: 1 },
+    {
+      field: "createdBy",
+      headerName: "Created By",
+      minWidth: 150,
+      flex: 1,
+    },
     {
       field: "createdAt",
       headerName: "Created At",
       minWidth: 200,
       flex: 1,
-      renderCell: (params) => getFormattedDate(params),
     },
     {
       field: "actions",
@@ -43,6 +48,7 @@ const DataTable = (props) => {
       minWidth: 150,
       flex: 1,
       renderCell: (params) => <Actions params={params} />,
+      sortable: false,
     },
   ];
 
@@ -62,7 +68,12 @@ const DataTable = (props) => {
         flex: 1,
         renderCell: (params) => getFormattedDate(params),
       },
-      { field: "createdBy", headerName: "Created By", minWidth: 150, flex: 1 },
+      {
+        field: "createdBy",
+        headerName: "Created By",
+        minWidth: 150,
+        flex: 1,
+      },
 
       {
         field: "updatedAt",
@@ -80,6 +91,7 @@ const DataTable = (props) => {
         renderCell: (params) => (
           <Actions admins={props.admins} params={params} />
         ),
+        sortable: false,
       },
     ];
   }

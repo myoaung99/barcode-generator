@@ -14,6 +14,7 @@ import { createBarcode, getAllMembers, patchCustomer } from "./../utils/https";
 import LoadingOverlay from "./../components/Overlay/LoadingOverlay";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import classes from "./DashboardScreen.module.css";
 
 function DashboardScreen() {
   const [modalIsShown, setModalIsShown] = useState(false);
@@ -76,8 +77,18 @@ function DashboardScreen() {
     return <Navigate replace to="/login" />;
   }
 
-  const customerUpdatingHandler = async (customerNewData) => {
-    setFetchingCustomers(true);
+  const customerUpdatingHandler = async (customerNewData, customerOldData) => {
+    const isEqual = (...objects) =>
+      objects.every(
+        (obj) => JSON.stringify(obj) === JSON.stringify(objects[0])
+      );
+
+    // if no changes are made
+    if (isEqual(customerNewData, customerOldData)) {
+      return;
+    }
+
+    setCreatingCustomer(true);
     dispatch(updateCustomer(customerNewData));
     await patchCustomer(
       customerNewData.id,
@@ -90,7 +101,7 @@ function DashboardScreen() {
     // await fetchCustomers();
     // Update လုပ်တာတဲ့ အစဥ်လိုက်ဖြစ်ချင်ရင် fetchCustomers() ပြန်ခေါ်ဖို့လို but အချိန်ပိုကြာ
     // page အချိန်းအပြောင်းဖြစ်သွားရင်တော့ အစဥ်လိုက်ဖြစ်ပါသည်
-    setFetchingCustomers(false);
+    setCreatingCustomer(false);
     return customerNewData;
   };
 
@@ -115,6 +126,8 @@ function DashboardScreen() {
         onDownload={downloadHandler}
         toggleModal={toggleModalHandler}
       />
+      {creatingCustomer && <LoadingOverlay />}
+      {fetchingCustomers && <PlainOverLay />}
       <DataTable
         loading={fetchingCustomers}
         rows={customers}
@@ -125,7 +138,6 @@ function DashboardScreen() {
         onPageChange={pageChangesHandler}
         processRowUpdate={customerUpdatingHandler}
       />
-      {creatingCustomer && <LoadingOverlay />}
       {modalIsShown && (
         <Modal
           onClose={toggleModalHandler}
@@ -138,3 +150,18 @@ function DashboardScreen() {
 }
 
 export default DashboardScreen;
+
+function PlainOverLay() {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        width: "100vw",
+        height: "100vh",
+        top: 0,
+        left: 0,
+        zIndex: 30,
+      }}
+    />
+  );
+}
