@@ -1,4 +1,6 @@
+import { Typography } from "@mui/material";
+
 export const getFormattedDate = (params) => {
   const { createdAt } = params.row;
-  return <p>{createdAt.slice(0, 10)}</p>;
+  return <Typography>{createdAt.slice(0, 10)}</Typography>;
 };

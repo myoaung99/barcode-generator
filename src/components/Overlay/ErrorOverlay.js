@@ -12,7 +12,9 @@ const ErrorOverlay = () => {
         alignItems: "center",
       }}
     >
-      <Typography>Something went wrong please try again later!</Typography>
+      <Typography>
+        Something went wrong. Please check your connection and try again later!
+      </Typography>
     </div>
   );
 };

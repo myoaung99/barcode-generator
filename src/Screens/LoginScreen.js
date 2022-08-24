@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState } from "react";
 import LoginForm from "../components/Login/LoginForm";
 import { loginSystemAdmin } from "../utils/https";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Navigate } from "react-router-dom";
 import { authenticate } from "../store/auth-slice";
 
-const LoginScreen = (props) => {
+const LoginScreen = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const navigate = useNavigate();
@@ -26,6 +26,7 @@ const LoginScreen = (props) => {
   if (token) {
     return <Navigate to="/dashboard" replace />;
   }
+
   return <LoginForm onSubmit={submitHandler} isLoading={isLoggingIn} login />;
 };
 

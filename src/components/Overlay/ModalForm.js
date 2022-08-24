@@ -95,13 +95,10 @@ const ModalForm = ({ onSubmit, isSubmitting }) => {
         style={{
           display: "flex",
           justifyContent: "center",
-          marginTop: "40px",
+          marginTop: "20px",
+          marginBottom: "10px",
         }}
       >
-        {/* <Button variant="contained" onClick={submitHandler}>
-          Create
-        </Button> */}
-
         <LoadingButton
           size="large"
           onClick={submitHandler}

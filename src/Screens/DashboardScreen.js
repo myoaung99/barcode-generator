@@ -12,16 +12,15 @@ import {
 } from "./../store/customer-slice";
 import { createBarcode, getAllMembers, patchCustomer } from "./../utils/https";
 import LoadingOverlay from "./../components/Overlay/LoadingOverlay";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 function DashboardScreen() {
   const [modalIsShown, setModalIsShown] = useState(false);
   const [page, setPage] = useState(0);
 
   const [fetchingCustomers, setFetchingCustomers] = useState(true);
-  // const [errorInFetching, setErrorInFetching] = useState(false);
-
   const [creatingCustomer, setCreatingCustomer] = useState(false);
-  // const [errorInCreation, setErrorInCreation] = useState(false);
 
   const token = useSelector((store) => store.auth.token);
   const dispatch = useDispatch();
@@ -31,18 +30,20 @@ function DashboardScreen() {
   );
   const rowCount = useSelector((state) => state.customer.customerData.total);
 
+  // fetching customers
   const fetchCustomers = useCallback(async () => {
-    const customers = await getAllMembers(token, page + 1);
+    const response = await getAllMembers(token, page + 1);
     dispatch(
       setCustomer({
-        customers: customers.members,
-        total: customers.total,
-        totalPage: customers.totalPage,
+        customers: response.members,
+        total: response.total,
+        totalPage: response.totalPage,
       })
     );
     setFetchingCustomers(false);
   }, [dispatch, page, token]);
 
+  // fetch on mount
   useEffect(() => {
     try {
       setFetchingCustomers(true);
@@ -60,15 +61,12 @@ function DashboardScreen() {
     setPage(nextPage);
   };
 
+  // creating barcode
   const submitHandler = async (data) => {
     setCreatingCustomer(true);
 
-    try {
-      const createdCustomer = await createBarcode({ ...data }, token);
-      dispatch(addCustomer(createdCustomer));
-    } catch (e) {
-      console.log(e);
-    }
+    const createdCustomer = await createBarcode({ ...data }, token);
+    dispatch(addCustomer(createdCustomer));
 
     setCreatingCustomer(false);
     toggleModalHandler();
@@ -96,9 +94,27 @@ function DashboardScreen() {
     return customerNewData;
   };
 
+  const downloadHandler = () => {
+    var zip = new JSZip();
+    let i = 0;
+    for (const customer of customers) {
+      const filename = `${customer.customer_name}_${customer.vip_code}`;
+      const img_Data = customer.barcode.split(",")[1];
+      i++;
+      zip.file(`${i}_${filename}.png`, img_Data, { base64: true });
+    }
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      // see FileSaver.js
+      saveAs(content, "barcode_images.zip");
+    });
+  };
+
   return (
     <Layout>
-      <ActionButtons toggleModal={toggleModalHandler} />
+      <ActionButtons
+        onDownload={downloadHandler}
+        toggleModal={toggleModalHandler}
+      />
       <DataTable
         loading={fetchingCustomers}
         rows={customers}

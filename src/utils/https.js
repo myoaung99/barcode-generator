@@ -48,13 +48,11 @@ export const deleteCustomer = async (customer_id, token) => {
 export const patchCustomer = async (customer_id, data, token) => {
   const url = BACKEND_URL + "/customer/" + customer_id;
 
-  const response = await axios.patch(url, data, {
+  await axios.patch(url, data, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-
-  console.log(response);
 };
 
 // auth
@@ -69,8 +67,7 @@ export const loginSystemAdmin = async (username, password) => {
   return response.data.token;
 };
 
-// admims
-
+// admins
 export const getAllSystemAdmins = async (token) => {
   const response = await axios.get(BACKEND_URL + "/admin", {
     headers: {
@@ -101,12 +98,9 @@ export const createSystemAdmin = async (username, password, token) => {
 export const deleteSystemAdmin = async (admin_id, token) => {
   const url = BACKEND_URL + "/admin/" + admin_id;
 
-  const response = await axios.delete(url, {
+  await axios.delete(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-
-  console.log(response);
-  // return response.data.deletedCustomer.customer_name;
 };

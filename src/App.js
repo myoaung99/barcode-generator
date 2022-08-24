@@ -11,6 +11,7 @@ function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // check if logged in or not
   useEffect(() => {
     const token = localStorage.getItem("barcodeToken");
     if (token) {

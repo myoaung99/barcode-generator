@@ -11,7 +11,7 @@ import CustomButton from "./UI/CustomButton";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 
-const ActionButtons = ({ toggleModal }) => {
+const ActionButtons = ({ toggleModal, onDownload }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -60,17 +60,7 @@ const ActionButtons = ({ toggleModal }) => {
         </CustomButton>
       </div>
       <div>
-        <CustomButton
-          startIcon={<FilterListIcon />}
-          onClick={() => console.log("Filter List ")}
-        >
-          Filter
-        </CustomButton>
-
-        <CustomButton
-          startIcon={<DownloadIcon />}
-          onClick={() => console.log("Download All")}
-        >
+        <CustomButton startIcon={<DownloadIcon />} onClick={() => onDownload()}>
           Download All
         </CustomButton>
 
