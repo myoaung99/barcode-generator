@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { Button, Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import classes from "./LoginForm.module.css";
 import { LoadingButton } from "@mui/lab";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const LoginForm = ({ onSubmit, login, isLoading }) => {
   const [inputValues, setInputValues] = useState({
@@ -28,6 +30,8 @@ const LoginForm = ({ onSubmit, login, isLoading }) => {
     }));
   };
 
+  const [showPassword, setShowPassword] = useState(true);
+
   const submitHandler = () => {
     const username = inputValues.username.value;
     const password = inputValues.password.value;
@@ -49,6 +53,14 @@ const LoginForm = ({ onSubmit, login, isLoading }) => {
     }
 
     onSubmit({ username, password });
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword((current) => !current);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -80,12 +92,25 @@ const LoginForm = ({ onSubmit, login, isLoading }) => {
           style={{ width: "80%", marginTop: "20px" }}
           id="standard-basic"
           label="Password"
+          type={showPassword ? "password" : "text"}
           onChange={textInputHandler.bind(this, "password")}
           variant="standard"
           error={!inputValues.password.isValid}
           helperText={
             !inputValues.password.isValid ? "Password must not be empty" : ""
           }
+          InputProps={{
+            endAdornment: (
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end"
+              >
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            ),
+          }}
         />
       </Box>
       <div

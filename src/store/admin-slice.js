@@ -11,7 +11,6 @@ export const adminsSlice = createSlice({
     addAdmin: (state, actions) => {
       state.admins.unshift(actions.payload);
     },
-    updateAdmin: (state, actions) => {},
     removeAdmin: (state, actions) => {
       state.admins = state.admins.filter(
         (admin) => admin._id !== actions.payload

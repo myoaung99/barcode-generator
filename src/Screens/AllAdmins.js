@@ -41,7 +41,6 @@ const AllAdmins = () => {
   if (errorInFetching && !fetchingAdmins) {
     return <ErrorOverlay />;
   }
-
   return (
     <Layout>
       <div style={{ paddingTop: 10, paddingBottom: 20 }}>

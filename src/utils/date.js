@@ -1,3 +1,4 @@
- export const getFormattedDate = (date)=>{
-    return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
- }
+export const getFormattedDate = (params) => {
+  const { createdAt } = params.row;
+  return <p>{createdAt.slice(0, 10)}</p>;
+};

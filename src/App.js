@@ -1,5 +1,4 @@
-import { useContext, useEffect } from "react";
-import "./App.css";
+import { useEffect } from "react";
 import DashboardScreen from "./Screens/DashboardScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import CreateAdmin from "./Screens/CreateAdmin";
@@ -20,15 +19,13 @@ function App() {
   }, [dispatch, navigate]);
 
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<DashboardScreen />} />
-        <Route path="/login" element={<LoginScreen />} />
-        <Route path="/dashboard" element={<DashboardScreen />} />
-        <Route path="/dashboard/createAdmin" element={<CreateAdmin />} />
-        <Route path="/dashboard/admins" element={<AllAdmins />} />
-      </Routes>
-    </>
+    <Routes>
+      <Route path="/" element={<DashboardScreen />} />
+      <Route path="/login" element={<LoginScreen />} />
+      <Route path="/dashboard" element={<DashboardScreen />} />
+      <Route path="/dashboard/createAdmin" element={<CreateAdmin />} />
+      <Route path="/dashboard/admins" element={<AllAdmins />} />
+    </Routes>
   );
 }
 

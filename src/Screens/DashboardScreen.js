@@ -103,6 +103,8 @@ function DashboardScreen() {
         loading={fetchingCustomers}
         rows={customers}
         rowCount={rowCount}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
         page={page}
         onPageChange={pageChangesHandler}
         processRowUpdate={customerUpdatingHandler}

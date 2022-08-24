@@ -4,10 +4,9 @@ import BarcodePreview from "./BarcodePreview";
 import Actions from "./Actions";
 import { useDispatch } from "react-redux";
 import CustomNoRowsOverlay from "../UI/CustomNoRowsOverlay";
+import { getFormattedDate } from "../../utils/date";
 
 const DataTable = (props) => {
-  const dispatch = useDispatch();
-
   let columns = [
     {
       field: "vip_code",
@@ -31,7 +30,13 @@ const DataTable = (props) => {
       renderCell: (params) => <BarcodePreview params={params} />,
     },
     { field: "createdBy", headerName: "Created By", minWidth: 150, flex: 1 },
-    { field: "createdAt", headerName: "Created At", minWidth: 200, flex: 1 },
+    {
+      field: "createdAt",
+      headerName: "Created At",
+      minWidth: 200,
+      flex: 1,
+      renderCell: (params) => getFormattedDate(params),
+    },
     {
       field: "actions",
       headerName: "Actions",
@@ -50,7 +55,13 @@ const DataTable = (props) => {
         flex: 1,
         editable: true,
       },
-      { field: "createdAt", headerName: "Created At", minWidth: 200, flex: 1 },
+      {
+        field: "createdAt",
+        headerName: "Created At",
+        minWidth: 200,
+        flex: 1,
+        renderCell: (params) => getFormattedDate(params),
+      },
       { field: "createdBy", headerName: "Created By", minWidth: 150, flex: 1 },
 
       {
@@ -58,6 +69,7 @@ const DataTable = (props) => {
         headerName: "Updated At",
         minWidth: 150,
         flex: 1,
+        renderCell: (params) => getFormattedDate(params),
       },
 
       {
@@ -72,12 +84,6 @@ const DataTable = (props) => {
     ];
   }
 
-  const rowUpdateHandler = useCallback((newRow) => {
-    // TODO: Make the HTTP request to save in the backend
-    // update row
-    console.log(newRow.id, newRow.customer_name);
-  }, []);
-
   return (
     <div style={{ display: "flex", height: "85%" }}>
       <div style={{ flexGrow: 1, backgroundColor: "white" }}>
@@ -87,8 +93,6 @@ const DataTable = (props) => {
           components={{
             NoRowsOverlay: CustomNoRowsOverlay,
           }}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
           paginationMode="server"
           getRowHeight={() => "auto"}
           style={{ padding: "10px" }}
