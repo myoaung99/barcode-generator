@@ -76,10 +76,9 @@ function DashboardScreen() {
 
     const createdCustomer = await createBarcode({ ...data }, token);
     dispatch(addCustomer(createdCustomer));
-
+    await fetchCustomers();
     setCreatingCustomer(false);
     toggleModalHandler();
-    await fetchCustomers();
   };
 
   if (!token) {
