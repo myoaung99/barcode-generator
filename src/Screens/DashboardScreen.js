@@ -76,7 +76,7 @@ function DashboardScreen() {
 
     const createdCustomer = await createBarcode({ ...data }, token);
     dispatch(addCustomer(createdCustomer));
-    await fetchCustomers();
+
     setCreatingCustomer(false);
     toggleModalHandler();
   };
@@ -131,6 +131,7 @@ function DashboardScreen() {
       !filterData.items[0]?.value ||
       filterData.items[0]?.value.trim().length === 0
     ) {
+      await fetchCustomers();
       return;
     }
     const { columnField, operatorValue, value } = filterData.items[0];
@@ -159,7 +160,7 @@ function DashboardScreen() {
         fetchCustomers={fetchCustomers}
         rows={customers}
         rowCount={rowCount || customers.length}
-        pageSize={5}
+        pageSize={customers.length || 5}
         rowsPerPageOptions={[5]}
         page={page}
         onPageChange={pageChangesHandler}

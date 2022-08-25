@@ -7,7 +7,6 @@ import {
 } from "@mui/x-data-grid";
 import BarcodePreview from "./BarcodePreview";
 import Actions from "./Actions";
-import { useDispatch } from "react-redux";
 import CustomNoRowsOverlay from "../UI/CustomNoRowsOverlay";
 import { getFormattedDate } from "../../utils/date";
 
@@ -20,8 +19,6 @@ function CustomToolbar() {
 }
 
 const DataTable = (props) => {
-  const [queryOptions, setQueryOptions] = React.useState({});
-
   const filteredOperators = getGridStringOperators().filter(({ value }) =>
     ["equals", "contains"].includes(value)
   );

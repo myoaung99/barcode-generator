@@ -72,7 +72,11 @@ const ModalForm = ({ onSubmit, isSubmitting }) => {
     <>
       <Typography
         variant="h5"
-        style={{ textAlign: "center", paddingTop: "20px" }}
+        style={{
+          textAlign: "center",
+          paddingTop: "10px",
+          marginBottom: "10px",
+        }}
       >
         Create Barcode
       </Typography>
@@ -87,6 +91,7 @@ const ModalForm = ({ onSubmit, isSubmitting }) => {
           id="vipCode"
           label="VIP Code"
           autoFocus={true}
+          autoComplete={false}
           onChange={updateInputValueHandler.bind(this, "vipCode")}
           variant="standard"
           error={credentialsInvalid.vipCode}
@@ -108,7 +113,7 @@ const ModalForm = ({ onSubmit, isSubmitting }) => {
           }
         />
         <TextField
-          style={{ width: "80%", marginTop: "20px" }}
+          style={{ width: "80%", marginTop: "10px" }}
           id="phone"
           label="Phone No."
           onChange={updateInputValueHandler.bind(this, "phone")}
@@ -119,15 +124,16 @@ const ModalForm = ({ onSubmit, isSubmitting }) => {
           }
         />
         <TextField
-          style={{ width: "80%", marginTop: "20px" }}
+          style={{ width: "80%", marginTop: "10px" }}
           id="nrc"
           label="NRC"
           onChange={updateInputValueHandler.bind(this, "NRC")}
           variant="standard"
+          helperText=" "
         />
 
         <TextField
-          style={{ width: "80%", marginTop: "20px" }}
+          style={{ width: "80%", marginTop: "10px" }}
           id="address"
           label="Address"
           onChange={updateInputValueHandler.bind(this, "address")}
