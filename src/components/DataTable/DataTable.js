@@ -110,7 +110,7 @@ const DataTable = (props) => {
         headerName: "Admin Name",
         minWidth: 150,
         flex: 1,
-        editable: true,
+        editable: false,
       },
       {
         field: "createdAt",
@@ -118,12 +118,14 @@ const DataTable = (props) => {
         minWidth: 200,
         flex: 1,
         renderCell: (params) => getFormattedDate(params),
+        editable: false,
       },
       {
         field: "createdBy",
         headerName: "Created By",
         minWidth: 150,
         flex: 1,
+        editable: false,
       },
 
       {
@@ -132,6 +134,7 @@ const DataTable = (props) => {
         minWidth: 150,
         flex: 1,
         renderCell: (params) => getFormattedDate(params),
+        editable: false,
       },
 
       {
@@ -143,6 +146,7 @@ const DataTable = (props) => {
           <Actions admins={props.admins} params={params} />
         ),
         sortable: false,
+        editable: false,
       },
     ];
   }
