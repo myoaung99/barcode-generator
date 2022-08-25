@@ -10,7 +10,12 @@ import {
   addCustomer,
   updateCustomer,
 } from "./../store/customer-slice";
-import { createBarcode, getAllMembers, patchCustomer } from "./../utils/https";
+import {
+  createBarcode,
+  getAllMembers,
+  getFilteredCustomers,
+  patchCustomer,
+} from "./../utils/https";
 import LoadingOverlay from "./../components/Overlay/LoadingOverlay";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -47,12 +52,15 @@ function DashboardScreen() {
   // fetch on mount
   useEffect(() => {
     try {
+      if (!token) {
+        return;
+      }
       setFetchingCustomers(true);
       fetchCustomers();
     } catch (e) {
       setFetchingCustomers(false);
     }
-  }, [fetchCustomers]);
+  }, [fetchCustomers, token]);
 
   const toggleModalHandler = () => {
     setModalIsShown((currentState) => !currentState);
@@ -71,6 +79,7 @@ function DashboardScreen() {
 
     setCreatingCustomer(false);
     toggleModalHandler();
+    await fetchCustomers();
   };
 
   if (!token) {
@@ -98,9 +107,7 @@ function DashboardScreen() {
       },
       token
     );
-    // await fetchCustomers();
-    // Update လုပ်တာတဲ့ အစဥ်လိုက်ဖြစ်ချင်ရင် fetchCustomers() ပြန်ခေါ်ဖို့လို but အချိန်ပိုကြာ
-    // page အချိန်းအပြောင်းဖြစ်သွားရင်တော့ အစဥ်လိုက်ဖြစ်ပါသည်
+
     setCreatingCustomer(false);
     return customerNewData;
   };
@@ -120,6 +127,26 @@ function DashboardScreen() {
     });
   };
 
+  const onFilter = async (filterData) => {
+    if (
+      !filterData.items[0]?.value ||
+      filterData.items[0]?.value.trim().length === 0
+    ) {
+      return;
+    }
+    const { columnField, operatorValue, value } = filterData.items[0];
+    const filteredCustomers = await getFilteredCustomers(
+      { columnField, operatorValue, value },
+      token
+    );
+    dispatch(
+      setCustomer({
+        customers: filteredCustomers,
+      })
+    );
+    setFetchingCustomers(false);
+  };
+
   return (
     <Layout>
       <ActionButtons
@@ -130,13 +157,15 @@ function DashboardScreen() {
       {fetchingCustomers && <PlainOverLay />}
       <DataTable
         loading={fetchingCustomers}
+        fetchCustomers={fetchCustomers}
         rows={customers}
-        rowCount={rowCount}
+        rowCount={rowCount || customers.length}
         pageSize={5}
         rowsPerPageOptions={[5]}
         page={page}
         onPageChange={pageChangesHandler}
         processRowUpdate={customerUpdatingHandler}
+        onFilter={onFilter}
       />
       {modalIsShown && (
         <Modal

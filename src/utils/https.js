@@ -11,24 +11,19 @@ export const getAllMembers = async (token, page) => {
       Authorization: `Bearer ${token}`,
     },
   });
+
+  console.log(response.data.members);
   return response.data;
 };
 
 export const createBarcode = async (data, token) => {
   const url = BACKEND_URL + "/customer";
-  const { vip_code, customer_name } = data;
-  const response = await axios.post(
-    url,
-    {
-      customer_name: customer_name,
-      vip_code: vip_code,
+  console.log(token);
+  const response = await axios.post(url, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  });
 
   return response.data.customer;
 };
@@ -53,6 +48,28 @@ export const patchCustomer = async (customer_id, data, token) => {
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+export const getFilteredCustomers = async (filterData, token) => {
+  const { columnField: field, operatorValue: operator, value } = filterData;
+
+  const httpConfig = {
+    operator,
+    field,
+    value,
+  };
+
+  const url = BACKEND_URL + "/customer/filter";
+
+  const response = await axios.get(url, {
+    params: httpConfig,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  console.log(response);
+  return response.data.members;
 };
 
 // auth

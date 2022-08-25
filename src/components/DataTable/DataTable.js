@@ -1,19 +1,39 @@
-import React, { useCallback, useRef, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import React from "react";
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarFilterButton,
+  getGridStringOperators,
+} from "@mui/x-data-grid";
 import BarcodePreview from "./BarcodePreview";
 import Actions from "./Actions";
 import { useDispatch } from "react-redux";
 import CustomNoRowsOverlay from "../UI/CustomNoRowsOverlay";
 import { getFormattedDate } from "../../utils/date";
 
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarFilterButton />
+    </GridToolbarContainer>
+  );
+}
+
 const DataTable = (props) => {
+  const [queryOptions, setQueryOptions] = React.useState({});
+
+  const filteredOperators = getGridStringOperators().filter(({ value }) =>
+    ["equals", "contains"].includes(value)
+  );
+
   let columns = [
     {
       field: "vip_code",
       headerName: "VIP Code",
-      minWidth: 150,
+      minWidth: 100,
       flex: 1,
       editable: true,
+      filterOperators: filteredOperators,
     },
     {
       field: "customer_name",
@@ -21,6 +41,7 @@ const DataTable = (props) => {
       minWidth: 150,
       flex: 1,
       editable: true,
+      filterOperators: filteredOperators,
     },
     {
       field: "barcode",
@@ -29,26 +50,59 @@ const DataTable = (props) => {
       flex: 1,
       renderCell: (params) => <BarcodePreview params={params} />,
       sortable: false,
+      filterable: false,
     },
+    {
+      field: "phone",
+      headerName: "Phone No.",
+      minWidth: 100,
+      flex: 1,
+      sortable: false,
+      filterable: false,
+    },
+    {
+      field: "nrc",
+      headerName: "NRC No.",
+      minWidth: 100,
+      flex: 1,
+      sortable: false,
+      filterable: false,
+    },
+    {
+      field: "address",
+      headerName: "Address",
+      minWidth: 100,
+      flex: 1,
+      sortable: false,
+      filterable: false,
+    },
+
     {
       field: "createdBy",
       headerName: "Created By",
       minWidth: 150,
       flex: 1,
+      filterOperators: filteredOperators,
     },
+
     {
       field: "createdAt",
       headerName: "Created At",
-      minWidth: 200,
+      minWidth: 100,
       flex: 1,
+      filterable: false,
+      renderCell: (params) => getFormattedDate(params),
     },
     {
       field: "actions",
       headerName: "Actions",
-      minWidth: 150,
+      width: 150,
       flex: 1,
-      renderCell: (params) => <Actions params={params} />,
+      renderCell: (params) => (
+        <Actions params={params} onFetch={props.fetchCustomers} />
+      ),
       sortable: false,
+      filterable: false,
     },
   ];
 
@@ -96,6 +150,10 @@ const DataTable = (props) => {
     ];
   }
 
+  const onFilterChange = (filterModel) => {
+    props.onFilter(filterModel);
+  };
+
   return (
     <div style={{ display: "flex", height: "85%" }}>
       <div style={{ flexGrow: 1, backgroundColor: "white" }}>
@@ -104,11 +162,14 @@ const DataTable = (props) => {
           columns={columns}
           components={{
             NoRowsOverlay: CustomNoRowsOverlay,
+            ...(!props.admins && { Toolbar: CustomToolbar }),
           }}
           paginationMode="server"
+          filterMode="server"
           getRowHeight={() => "auto"}
           style={{ padding: "10px" }}
           experimentalFeatures={{ newEditingApi: true }}
+          onFilterModelChange={onFilterChange}
         />
       </div>
     </div>

@@ -9,7 +9,6 @@ import { authenticate } from "./store/auth-slice";
 
 function App() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   // check if logged in or not
   useEffect(() => {
@@ -17,7 +16,7 @@ function App() {
     if (token) {
       dispatch(authenticate(token));
     }
-  }, [dispatch, navigate]);
+  }, [dispatch]);
 
   return (
     <Routes>

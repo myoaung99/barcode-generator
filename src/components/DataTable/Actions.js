@@ -9,7 +9,7 @@ import { removeAdmin } from "../../store/admin-slice";
 import { LoadingButton } from "@mui/lab";
 import { saveAs } from "file-saver";
 
-const Actions = ({ params, admins }) => {
+const Actions = ({ params, admins, onFetch }) => {
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
 
@@ -32,6 +32,7 @@ const Actions = ({ params, admins }) => {
       // delete customer
       await deleteCustomer(params.row.id, token);
       dispatch(removeCustomer(params.row.id));
+      await onFetch();
     }
 
     setIsDeleting(false);
@@ -41,6 +42,7 @@ const Actions = ({ params, admins }) => {
     <div
       style={{
         display: "flex",
+        flexDirection: "column",
         justifyContent: "space-between",
         paddingTop: admins ? 10 : 0,
         paddingBottom: admins ? 10 : 0,
@@ -53,7 +55,7 @@ const Actions = ({ params, admins }) => {
           aria-label="download barcode"
           size="small"
           startIcon={<DownloadIcon />}
-          style={{ marginRight: 10 }}
+          style={{ marginBottom: 5 }}
           onClick={downloadHandler}
         >
           Save

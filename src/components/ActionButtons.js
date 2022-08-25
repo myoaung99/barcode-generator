@@ -60,6 +60,13 @@ const ActionButtons = ({ toggleModal, onDownload }) => {
         </CustomButton>
       </div>
       <div>
+        <CustomButton
+          startIcon={<FilterListIcon />}
+          onClick={() => console.log("filter")}
+        >
+          Filter
+        </CustomButton>
+
         <CustomButton startIcon={<DownloadIcon />} onClick={() => onDownload()}>
           Download All
         </CustomButton>
