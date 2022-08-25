@@ -91,7 +91,7 @@ const ModalForm = ({ onSubmit, isSubmitting }) => {
           id="vipCode"
           label="VIP Code"
           autoFocus={true}
-          autoComplete={false}
+          autoComplete="false"
           onChange={updateInputValueHandler.bind(this, "vipCode")}
           variant="standard"
           error={credentialsInvalid.vipCode}

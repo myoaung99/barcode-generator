@@ -128,8 +128,9 @@ function DashboardScreen() {
 
   const onFilter = async (filterData) => {
     if (
+      filterData.items.length === 0 ||
       !filterData.items[0]?.value ||
-      filterData.items[0]?.value.trim().length === 0
+      filterData.items[0]?.value.length === 0
     ) {
       await fetchCustomers();
       return;
@@ -161,7 +162,7 @@ function DashboardScreen() {
         rows={customers}
         rowCount={rowCount || customers.length}
         pageSize={customers.length || 5}
-        rowsPerPageOptions={[5]}
+        rowsPerPageOptions={[customers.length || 5]}
         page={page}
         onPageChange={pageChangesHandler}
         processRowUpdate={customerUpdatingHandler}
